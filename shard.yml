@@ -14,6 +14,8 @@ dependencies:
   exception_page:
     github: crystal-loot/exception_page
     version: ~> 0.1.1
+  graphql-crystal:
+    github: ziprandom/graphql-crystal
 
 development_dependencies:
   ameba:
