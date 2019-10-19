@@ -28,7 +28,7 @@ module Kemal
 
     def initialize
       @host_binding = "0.0.0.0"
-      @port = 3000
+      @port = 3090
       @env = ENV["KEMAL_ENV"]? || "development"
       @serve_static = {"dir_listing" => false, "gzip" => true}
       @public_folder = "./public"
