@@ -21,6 +21,10 @@ development_dependencies:
   ameba:
     github: crystal-ameba/ameba
     version: ~> 0.10.0
+  webmock:
+    github: manastech/webmock.cr
+    branch: master
+
 
 crystal: 0.30.0
 
