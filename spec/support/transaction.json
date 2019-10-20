@@ -1,0 +1,19 @@
+{
+  "id": 8558,
+  "description": "Chick-fil-A",
+  "budget_category": "Outings",
+  "icon_class_name": "fa fa-utensils",
+  "budget_item_id": 2509,
+  "clearance_date": "2019-07-01",
+  "amount": -807,
+  "account_name": "Checking",
+  "account_id": 1,
+  "check_number": "",
+  "receipt": null,
+  "notes": null,
+  "budget_exclusion": false,
+  "primary_transaction_id": 8557,
+  "subtransactions": [
+  ],
+  "updated_at": "2019-07-02T13:03:16.742Z"
+}

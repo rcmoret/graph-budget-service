@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "date_range": ["2019-09-01", "2019-09-30"],
+    "prior_balance":-5021582,
+    "query_options":{
+      "month":"9",
+      "year":"2019",
+      "account_id":"12",
+      "captures":["12"],
+      "include_pending":false
+    }
+  },
+
+  "transactions": [
+    {
+      "id":9501,
+      "description":"Payment",
+      "budget_category":"Groceries",
+      "icon_class_name":"fas fa-joint",
+      "budget_item_id":88,
+      "clearance_date":"2019-09-24",
+      "amount":60000,
+      "account_name":"Student Loan (d)",
+      "account_id":12,
+      "check_number":"",
+      "receipt":null,
+      "notes":null,
+      "budget_exclusion":true,
+      "subtransactions":[],
+      "updated_at":"2019-10-15T13:30:08.127Z"
+    },
+    {
+      "id":9290,
+      "description":"Payment",
+      "budget_category":null,
+      "icon_class_name":null,
+      "budget_item_id":null,
+      "clearance_date":"2019-09-18",
+      "amount":6000,
+      "account_name":"Student Loan (d)",
+      "account_id":12,
+      "check_number":"",
+      "receipt":null,
+      "notes":null,
+      "budget_exclusion":true,
+      "subtransactions":[
+        {
+          "id": 9382,
+          "budget_category": "Misc. Income",
+          "budget_item_id": 2877,
+          "description": "",
+          "amount": 5700,
+          "primary_transaction_id": 9290,
+          "icon_class_name": "fas fa-money-bill-wave"
+        },
+        {
+          "id": 9383,
+          "budget_category": "Reinvestment",
+          "budget_item_id": 2897,
+          "description": "",
+          "amount": 4300,
+          "primary_transaction_id": 9290,
+          "icon_class_name": "fas fa-wrench"
+        }
+      ],
+      "updated_at":"2019-09-19T01:39:35.828Z"
+    }
+  ]
+}

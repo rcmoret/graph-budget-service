@@ -1,0 +1,22 @@
+[
+  {
+    "id":104,
+    "accrual":false,
+    "name":"Tennessean",
+    "expense":true,
+    "monthly":true,
+    "default_amount":-999,
+    "icon_id":12,
+    "icon_class_name":"fas fa-newspaper"
+  },
+  {
+    "id":110,
+    "accrual":false,
+    "name":"AT&T",
+    "expense":true,
+    "monthly":true,
+    "default_amount":-5000,
+    "icon_id":14,
+    "icon_class_name":"fas fa-file-invoice-dollar"
+  }
+]

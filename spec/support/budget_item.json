@@ -1,0 +1,17 @@
+{
+  "id": 2394,
+  "amount": -17000,
+  "budget_category_id": 180,
+  "budget_interval_id": 73,
+  "name": "Booze",
+  "expense": true,
+  "monthly": false,
+  "accrual": false,
+  "month": 10,
+  "year": 2019,
+  "icon_class_name": "fas fa-cocktail",
+  "transaction_count": 9,
+  "spent": -10950,
+  "maturity_month": null,
+  "maturity_year": null
+}

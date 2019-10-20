@@ -1,0 +1,49 @@
+{
+  "metadata": {
+    "month":8,
+    "year":2019,
+    "is_set_up":false,
+    "is_closed_out":false,
+    "days_remaining":31,
+    "total_days":31,
+    "spent":0,
+    "balance":0
+  },
+
+ "collection": [
+   {
+     "id":2714,
+     "amount":263614,
+     "budget_category_id":1,
+     "budget_interval_id":58,
+     "name":"Salary",
+     "expense":false,
+     "monthly":true,
+     "accrual":false,
+     "month":8,
+     "year":2019,
+     "icon_class_name":"fas fa-dollar-sign",
+     "transaction_count":0,
+     "spent":0,
+     "maturity_month":null,
+     "maturity_year":null
+   },
+   {
+     "id":2715,
+     "amount":263614,
+     "budget_category_id":1,
+     "budget_interval_id":58,
+     "name":"Salary",
+     "expense":false,
+     "monthly":true,
+     "accrual":false,
+     "month":8,
+     "year":2019,
+     "icon_class_name":"fas fa-dollar-sign",
+     "transaction_count":0,
+     "spent":0,
+     "maturity_month":null,
+     "maturity_year":null
+   }
+ ]
+}
