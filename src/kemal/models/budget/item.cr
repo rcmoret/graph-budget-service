@@ -51,10 +51,15 @@ module Budget
     field :maturityYear { data["maturity_year"] }
 
     def transactions
+      item_attrs = {
+        "icon_class_name" => data["icon_class_name"].to_s,
+        "budget_category" => data["name"].to_s,
+        "budget_item_id" => data["id"],
+      }
       path = "budget/categories/#{data["budget_category_id"]}/items/#{data["id"]}/transactions"
       response = Rest::Client.get(path)
-      JSON.parse(response.body).as_a.map do |txn_attrs|
-        Transaction::Entry.find(1, 8558, txn_attrs)
+      JSON.parse(response.body).as_a.map do |attrs|
+        Transaction::Entry.find(attrs["account_id"].as_i, attrs["id"].as_i, item_attrs)
       end
     end
     field :transactions

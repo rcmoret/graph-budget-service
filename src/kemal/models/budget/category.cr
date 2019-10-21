@@ -17,7 +17,7 @@ module Budget
       expense: Bool,
       accrual: Bool,
       default_amount: Int32,
-      icon_class_name: String
+      icon_class_name: String?
     )
 
     field :id

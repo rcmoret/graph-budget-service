@@ -32,107 +32,109 @@ module QueryType
   end
 end
 
-module GraphQL
-  SCHEMA = ::GraphQL::Schema.from_schema(
-    %{
-      schema {
-        query: QueryType
-      }
+module Budget
+  module GraphQL
+    SCHEMA = ::GraphQL::Schema.from_schema(
+      %{
+        schema {
+          query: QueryType
+        }
 
-      type QueryType {
-        accounts: [AccountType]
-        budgetCategories: [BudgetCategoryType]
-        budgetItem(categoryId: String!, itemId: String!): BudgetItemType
-        budgetItems(month: String!, year: String!): BudgetItemsType
-        transactions(accountId: String!, month: String!, year: String!): TransactionsType
-      }
+        type QueryType {
+          accounts: [AccountType]
+          budgetCategories: [BudgetCategoryType]
+          budgetItem(categoryId: String!, itemId: String!): BudgetItemType
+          budgetItems(month: String!, year: String!): BudgetItemsType
+          transactions(accountId: String!, month: String!, year: String!): TransactionsType
+        }
 
-      type AccountType {
-        id: String!
-        name: String!
-        balance: String!
-        priority: String!
-        cashFlow: String
-      }
+        type AccountType {
+          id: String!
+          name: String!
+          balance: String!
+          priority: String!
+          cashFlow: String
+        }
 
-      type BudgetCategoryType {
-        id: String!
-        name: String!
-        expense: String!
-        monthly: String!
-        accrual: String!
-        defaultAmount: String!
-        iconClassName: String!
-      }
+        type BudgetCategoryType {
+          id: String!
+          name: String!
+          expense: String!
+          monthly: String!
+          accrual: String!
+          defaultAmount: String!
+          iconClassName: String
+        }
 
-      type BudgetItemsType {
-        metadata: BudgetMetadataType
-        collection: [BudgetItemType]
-      }
+        type BudgetItemsType {
+          metadata: BudgetMetadataType
+          collection: [BudgetItemType]
+        }
 
-      type BudgetMetadataType {
-        month: String!
-        year: String!
-        isClosedOut: String!
-        isSetUp: String!
-        daysRemaining: String!
-        spent: String!
-      }
+        type BudgetMetadataType {
+          month: String!
+          year: String!
+          isClosedOut: String!
+          isSetUp: String!
+          daysRemaining: String!
+          spent: String!
+        }
 
-      type BudgetItemType {
-        id: String!
-        name: String!
-        amount: String!
-        spent: String!
-        accrual: String!
-        month: String!
-        year: String!
-        spent: String!
-        budgetCategoryId: String!
-        iconClassName: String!
-        transactionCount: String!
-        maturityMonth: String!
-        maturityYear: String!
-        transactions: [TransactionEntryType]
-      }
+        type BudgetItemType {
+          id: String!
+          name: String!
+          amount: String!
+          spent: String!
+          accrual: String!
+          month: String!
+          year: String!
+          spent: String!
+          budgetCategoryId: String!
+          iconClassName: String!
+          transactionCount: String!
+          maturityMonth: String!
+          maturityYear: String!
+          transactions: [TransactionEntryType]
+        }
 
-      type TransactionsType {
-        metadata: TransactionMetadataType
-        collection: [TransactionEntryType]
-      }
+        type TransactionsType {
+          metadata: TransactionMetadataType
+          collection: [TransactionEntryType]
+        }
 
-      type TransactionMetadataType {
-        priorBalance: String!
-        dateRange: [String!]
-        month: String!
-        year: String!
-        accountId: String!
-        includePending: String!
-      }
+        type TransactionMetadataType {
+          priorBalance: String!
+          dateRange: [String!]
+          month: String!
+          year: String!
+          accountId: String!
+          includePending: String!
+        }
 
-      type TransactionEntryType {
-        id: String!
-        description: String
-        clearanceDate: String
-        checkNumber: String
-        notes: String
-        budgetExclusion: String!
-        accountName: String!
-        primaryTransactionId: String
-        details: [TransactionDetailType]
-      }
+        type TransactionEntryType {
+          id: String!
+          description: String
+          clearanceDate: String
+          checkNumber: String
+          notes: String
+          budgetExclusion: String!
+          accountName: String!
+          primaryTransactionId: String
+          details: [TransactionDetailType]
+        }
 
-      type TransactionDetailType {
-        amount: String!
-        budgetCategory: String
-        budgetItemId: String
-        iconClassName: String
-        primaryTransactionId: String
+        type TransactionDetailType {
+          amount: String!
+          budgetCategory: String
+          budgetItemId: String
+          iconClassName: String
+          primaryTransactionId: String
+        }
       }
-    }
-  )
+    )
 
-  SCHEMA.tap do |schema|
-    schema.query_resolver = QueryType
+    SCHEMA.tap do |schema|
+      schema.query_resolver = QueryType
+    end
   end
 end

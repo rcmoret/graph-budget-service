@@ -96,5 +96,3 @@ module Kemal
     end
   end
 end
-
-Kemal.run
