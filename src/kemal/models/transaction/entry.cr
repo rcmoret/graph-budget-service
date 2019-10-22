@@ -20,6 +20,7 @@ module Transaction
         "budget_exclusion" => response["budget_exclusion"].as_bool,
         "amount" => response["amount"].as_i,
         "budget_category" => data["budget_category"],
+        "primary_transaction_id" => response["primary_transaction_id"].as_i?,
         "budget_item_id" => data["budget_item_id"],
         "icon_class_name" => data["icon_class_name"]
       },
@@ -75,6 +76,7 @@ module Transaction
           "budget_category" => data["budget_category"],
           "budget_item_id" => data["budget_item_id"],
           "account_id" => data["account_id"],
+          "primary_transaction_id" => data["primary_transaction_id"],
           "icon_class_name" => data["icon_class_name"]
         }
         Entry.new(attrs, subtransactions)
