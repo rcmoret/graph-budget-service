@@ -52,8 +52,8 @@ module Budget
 
     def transactions
       item_attrs = {
-        "icon_class_name" => data["icon_class_name"].to_s,
-        "budget_category" => data["name"].to_s,
+        "icon_class_name" => data["icon_class_name"],
+        "budget_category" => data["name"],
         "budget_item_id" => data["id"],
       }
       path = "budget/categories/#{data["budget_category_id"]}/items/#{data["id"]}/transactions"

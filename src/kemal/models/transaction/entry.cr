@@ -19,7 +19,7 @@ module Transaction
         "notes" => response["notes"].as_s?,
         "budget_exclusion" => response["budget_exclusion"].as_bool,
         "amount" => response["amount"].as_i,
-        "budget_category" => "from find method",
+        "budget_category" => data["budget_category"],
         "budget_item_id" => data["budget_item_id"],
         "icon_class_name" => data["icon_class_name"]
       },
