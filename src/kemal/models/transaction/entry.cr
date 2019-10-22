@@ -51,14 +51,48 @@ module Transaction
     end
     field :details
 
-    field :id { data["id"] }
+    def description
+      return data["description"] if data["primary_transaction_id"] == nil
+
+      resp = Finder.find(account_id, data["primary_transaction_id"].to_s.to_i)
+      resp.description
+    end
+    field :description
+
+    field :id
+    field :accountId { account_id }
     field :clearanceDate { data["clearance_date"] }
-    field :description { data["description"] }
     field :accountName { data["account_name"] }
     field :checkNumber { data["check_number"] }
     field :notes { data["notes"] }
     field :budgetExclusion { data["budget_exclusion"] }
-    field :primaryTransactionId { data["primary_transaction_id"]? }
+    field :primaryTransactionId { data["primary_transaction_id"] }
+
+    private def id
+      data["id"].to_s.to_i
+    end
+
+    private def account_id
+      data["account_id"].to_s.to_i
+    end
+
+    class Finder
+      def self.find(account_id : Int32, txn_id : Int32) : Finder
+        url = "accounts/#{account_id}/transactions/#{txn_id}"
+        response = JSON.parse(Rest::Client.get(url).body)
+        new(response)
+      end
+
+      getter data
+
+      def initialize(data : JSON::Any)
+        @data = data
+      end
+
+      def description
+        data["description"].as_s?
+      end
+    end
 
     class Factory
       alias BASETYPES = String | Int32 | Bool | Nil
