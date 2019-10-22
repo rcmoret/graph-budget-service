@@ -113,6 +113,7 @@ module Budget
 
         type TransactionEntryType {
           id: String!
+          accountId: String!
           description: String
           clearanceDate: String
           checkNumber: String

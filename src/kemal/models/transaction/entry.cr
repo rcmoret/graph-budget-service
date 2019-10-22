@@ -14,6 +14,7 @@ module Transaction
         "clearance_date" => response["clearance_date"].as_s,
         "description" => response["description"].as_s?,
         "account_name" => response["account_name"].as_s,
+        "account_id" => response["account_id"].as_i,
         "check_number" => response["check_number"].as_s?,
         "notes" => response["notes"].as_s?,
         "budget_exclusion" => response["budget_exclusion"].as_bool,
@@ -73,6 +74,7 @@ module Transaction
           "amount" => data["amount"],
           "budget_category" => data["budget_category"],
           "budget_item_id" => data["budget_item_id"],
+          "account_id" => data["account_id"],
           "icon_class_name" => data["icon_class_name"]
         }
         Entry.new(attrs, subtransactions)
@@ -90,6 +92,7 @@ module Transaction
           "amount" => data["amount"].as_i,
           "budget_category" => data["budget_category"].as_s?,
           "budget_item_id" => data["budget_item_id"].as_i?,
+          "account_id" => data["account_id"].as_i,
           "icon_class_name" => data["icon_class_name"].as_s?
         }
         subtransactions = data["subtransactions"].as_a.map do |subtransaction|
