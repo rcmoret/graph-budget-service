@@ -21,8 +21,6 @@ module Transaction
         "budget_category" => "from find method",
         "budget_item_id" => data["budget_item_id"],
         "icon_class_name" => data["icon_class_name"]
-        # "budget_category" => response["budget_category"].as_s?,
-        # "icon_class_name" => "fa fas-big-booty"
       },
         [] of Hash(String, Int32 | String | Bool | Nil))
     end
@@ -58,6 +56,7 @@ module Transaction
     field :checkNumber { data["check_number"] }
     field :notes { data["notes"] }
     field :budgetExclusion { data["budget_exclusion"] }
+    field :primaryTransactionId { data["primary_transaction_id"]? }
 
     class Factory
       alias BASETYPES = String | Int32 | Bool | Nil
