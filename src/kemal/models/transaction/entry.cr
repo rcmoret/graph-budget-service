@@ -95,6 +95,7 @@ module Transaction
           "budget_category" => data["budget_category"].as_s?,
           "budget_item_id" => data["budget_item_id"].as_i?,
           "account_id" => data["account_id"].as_i,
+          "primary_transaction_id" => nil,
           "icon_class_name" => data["icon_class_name"].as_s?
         }
         subtransactions = data["subtransactions"].as_a.map do |subtransaction|
