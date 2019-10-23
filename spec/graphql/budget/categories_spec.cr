@@ -2,7 +2,7 @@ require "spec"
 require "../../../src/kemal/graphql/schema"
 require "webmock"
 
-describe GraphQL do
+describe Budget::GraphQL do
   describe ".execute" do
     context "when calling the budget categories endpoint" do
       it "should return data" do
@@ -47,7 +47,7 @@ describe GraphQL do
             ]
           }
         }
-        GraphQL::SCHEMA.execute(query_string).should eq expected_return
+        Budget::GraphQL::SCHEMA.execute(query_string).should eq expected_return
       end
     end
   end
