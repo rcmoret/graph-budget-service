@@ -6,26 +6,44 @@ describe Budget::GraphQL do
   describe ".execute" do
     context "when calling the item/transactions endpoint" do
       it "returns some data" do
-        txn_id = 8558
+        txn_id = 9474
         budget_category_id = 180
         budget_item_id = 2394
-        account_id = 1
         path = "budget/categories/#{budget_category_id}/items/#{budget_item_id}/transactions"
-        WebMock.stub(:get, "localhost:8088/#{path}")
+        WebMock.stub(:get, "#{Rest::Client::BASE_URL}/#{path}")
           .to_return(
              body: File.read("./spec/support/budget_item_transactions.json"),
              status: 200
           )
 
-        txn_path = "accounts/#{account_id}/transactions/#{txn_id}"
-        WebMock.stub(:get, "localhost:8088/#{txn_path}")
-          .to_return(
-             body: File.read("./spec/support/transaction.json"),
-             status: 200
-          )
+        [
+          {
+            "id" => txn_id,
+            "account_id" => 17,
+          },
+          {
+            "id" => 9377,
+            "account_id" => 17,
+          },
+          {
+            "id" => 9515,
+            "account_id" => 17,
+          },
+          {
+            "id" => 8557,
+            "account_id" => 1,
+          },
+        ].each do |hash|
+          txn_path = "accounts/#{hash["account_id"]}/transactions/#{hash["id"]}"
+          WebMock.stub(:get, "#{Rest::Client::BASE_URL}/#{txn_path}")
+            .to_return(
+               body: File.read("./spec/support/transaction.json"),
+               status: 200
+            )
+        end
 
         item_path = "budget/categories/#{budget_category_id}/items/#{budget_item_id}"
-        WebMock.stub(:get, "localhost:8088/#{item_path}")
+        WebMock.stub(:get, "#{Rest::Client::BASE_URL}/#{item_path}")
           .to_return(
              body: File.read("./spec/support/budget_item.json"),
              status: 200
@@ -56,7 +74,7 @@ describe Budget::GraphQL do
                   "description" => "Chick-fil-A",
                   "details" => [
                     {
-                      "amount" => -869,
+                      "amount" => -807,
                     },
                   ],
                 },
@@ -66,7 +84,7 @@ describe Budget::GraphQL do
                   "description" => "Chick-fil-A",
                   "details" => [
                     {
-                      "amount" => -4500,
+                      "amount" => -807,
                     },
                   ],
                 },
@@ -76,7 +94,7 @@ describe Budget::GraphQL do
                   "description" => "Chick-fil-A",
                   "details" => [
                     {
-                      "amount" => -2050,
+                      "amount" => -807,
                     },
                   ],
                 },

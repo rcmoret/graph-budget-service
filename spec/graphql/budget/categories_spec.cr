@@ -6,7 +6,7 @@ describe Budget::GraphQL do
   describe ".execute" do
     context "when calling the budget categories endpoint" do
       it "should return data" do
-        WebMock.stub(:get, "localhost:8088/budget/categories")
+        WebMock.stub(:get, "#{Rest::Client::BASE_URL}/budget/categories")
           .to_return(
              body: File.read("./spec/support/budget_categories.json"),
              status: 200

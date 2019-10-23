@@ -8,7 +8,7 @@ describe Budget::GraphQL do
       it "should return data" do
         month = 8
         year = 2019
-        WebMock.stub(:get, "localhost:8088/budget/items?month=#{month}&year=#{year}")
+        WebMock.stub(:get, "#{Rest::Client::BASE_URL}/budget/items?month=#{month}&year=#{year}")
           .to_return(
              body: File.read("./spec/support/budget_items.json"),
              status: 200

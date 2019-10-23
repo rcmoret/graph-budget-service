@@ -9,7 +9,7 @@ describe Budget::GraphQL do
         account_id = 12
         month = 9
         year = 2019
-        WebMock.stub(:get, "localhost:8088/accounts/#{account_id}/transactions?month=#{month}&year=#{year}")
+        WebMock.stub(:get, "#{Rest::Client::BASE_URL}/accounts/#{account_id}/transactions?month=#{month}&year=#{year}")
           .to_return(
              body: File.read("./spec/support/transactions.json"),
              status: 200
