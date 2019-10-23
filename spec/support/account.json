@@ -1,0 +1,10 @@
+{
+  "id":18,
+  "name":"Aspiration",
+  "cash_flow":true,
+  "priority":355,
+  "archived_at":null,
+  "created_at":"2019-08-01T15:59:15.767Z",
+  "updated_at":"2019-08-05T16:16:30.094Z",
+  "balance":199103
+}
