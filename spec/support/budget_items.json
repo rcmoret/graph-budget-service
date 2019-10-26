@@ -1,16 +1,4 @@
-{
-  "metadata": {
-    "month":8,
-    "year":2019,
-    "is_set_up":false,
-    "is_closed_out":false,
-    "days_remaining":31,
-    "total_days":31,
-    "spent":0,
-    "balance":0
-  },
-
- "collection": [
+ [
    {
      "id":2714,
      "amount":263614,
@@ -45,5 +33,4 @@
      "maturity_month":null,
      "maturity_year":null
    }
- ]
-}
+]

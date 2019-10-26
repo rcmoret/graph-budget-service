@@ -16,7 +16,7 @@ module QueryType
   end
 
   field :budgetItems do |args|
-    Budget::Wrapper.new(args["month"], args["year"])
+    Budget::Wrapper.new(args["month"].to_s, args["year"].to_s)
   end
 
   field :transactions do |args|

@@ -3,64 +3,76 @@ require "graphql-crystal"
 module Budget
   class Item
     include GraphQL::ObjectType
-    getter data
+    include JSON::Serializable
 
     def self.find(category_id, item_id) : Item
       response = Rest::Client.get("budget/categories/#{category_id}/items/#{item_id}")
-      item_attrs = JSON.parse(response.body)
-      from_json(item_attrs)
+      from_json(response.body)
     end
 
-    def self.from_json(data : JSON::Any) : Item
-      attrs = Hash(String, String | Int32 | Bool | Nil).new.tap do |hash|
-        hash["id"] = data["id"].as_i
-        hash["amount"] = data["amount"].as_i
-        hash["name"] = data["name"].to_s
-        hash["expense"] = data["expense"].as_bool
-        hash["monthly"] = data["monthly"].as_bool
-        hash["accrual"] = data["accrual"].as_bool
-        hash["month"] = data["month"].as_i
-        hash["year"] = data["year"].as_i
-        hash["spent"] = data["spent"].as_i
-        hash["budget_category_id"] = data["budget_category_id"].as_i
-        hash["icon_class_name"] = data["icon_class_name"].to_s
-        hash["transaction_count"] = data["transaction_count"].as_i
-        hash["maturity_month"] = data["maturity_month"].as_i?
-        hash["maturity_year"] = data["maturity_year"].as_i?
-      end
-      new(attrs)
+    def self.for(month, year) : Array(Item)
+      response = Rest::Client.get("budget/items?year=#{year}&month=#{month}")
+      Array(Item).from_json(response.body)
     end
 
-    def initialize(data : Hash(String, String | Int32 | Bool | Nil))
-      @data = data
-    end
+    @[JSON::Field(key: "id")]
+    getter id : Int32
+    field :id
 
-    field :id { data["id"] }
-    field :amount { data["amount"] }
-    field :name { data["name"].to_s }
-    field :expense { data["expense"] }
-    field :monthly { data["monthly"] }
-    field :accrual { data["accrual"] }
-    field :month { data["month"] }
-    field :year { data["year"] }
-    field :spent { data["spent"] }
-    field :budgetCategoryId { data["budget_category_id"] }
-    field :iconClassName { data["icon_class_name"].to_s }
-    field :transactionCount { data["transaction_count"] }
-    field :maturityMonth { data["maturity_month"] }
-    field :maturityYear { data["maturity_year"] }
+    @[JSON::Field(key: "amount")]
+    getter amount : Int32
+    field :amount
+
+    @[JSON::Field(key: "name")]
+    getter name : String
+    field :name
+
+    @[JSON::Field(key: "expense")]
+    getter expense : Bool
+    field :expense
+
+    @[JSON::Field(key: "monthly")]
+    getter monthly : Bool
+    field :monthly
+
+    @[JSON::Field(key: "accrual")]
+    getter accrual : Bool
+    field :accrual
+
+    @[JSON::Field(key: "month")]
+    getter month : Int32
+    field :month
+
+    @[JSON::Field(key: "year")]
+    getter year : Int32
+    field :year
+
+    @[JSON::Field(key: "spent")]
+    getter spent : Int32
+    field :spent
+
+    @[JSON::Field(key: "budget_category_id")]
+    getter budget_category_id : Int32
+    field :budgetCategoryId { budget_category_id }
+
+    @[JSON::Field(key: "icon_class_name")]
+    getter icon_class_name : String | Nil
+    field :iconClassName { icon_class_name }
+
+    @[JSON::Field(key: "transaction_count")]
+    getter transaction_count : Int32
+    field :transactionCount { transaction_count }
+
+    @[JSON::Field(key: "maturity_month")]
+    getter maturity_month : Int32 | Nil
+    field :maturityMonth { maturity_month }
+
+    @[JSON::Field(key: "maturity_year")]
+    getter maturity_year : Int32 | Nil
+    field :maturityYear { maturity_year }
 
     def transactions
-      item_attrs = {
-        "icon_class_name" => data["icon_class_name"],
-        "budget_category" => data["name"],
-        "budget_item_id" => data["id"],
-      }
-      path = "budget/categories/#{data["budget_category_id"]}/items/#{data["id"]}/transactions"
-      response = Rest::Client.get(path)
-      JSON.parse(response.body).as_a.map do |attrs|
-        Transaction::Entry.find(attrs["account_id"].as_i, attrs["id"].as_i, item_attrs)
-      end
+      [] of Transaction::Entry
     end
     field :transactions
   end

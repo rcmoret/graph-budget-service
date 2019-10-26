@@ -3,21 +3,20 @@ require "graphql-crystal"
 module Budget
   class Wrapper
     include GraphQL::ObjectType
-    getter parsed_response
+    getter month
+    getter year
 
-    def initialize(month, year)
-      response = Rest::Client.get("budget/items?month=#{month}&year=#{year}")
-      @parsed_response = JSON.parse(response.body)
+    def initialize(month : String, year : String)
+      @month = month
+      @year = year
     end
 
     field :metadata do
-      Metadata.new(parsed_response["metadata"])
+      Metadata.for(month, year)
     end
 
     field :collection do
-      parsed_response["collection"].as_a.map do |item_attrs|
-        Item.from_json(item_attrs)
-      end
+      Item.for(month, year)
     end
   end
 end
