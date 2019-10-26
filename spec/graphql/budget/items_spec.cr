@@ -13,6 +13,11 @@ describe Budget::GraphQL do
              body: File.read("./spec/support/budget_items.json"),
              status: 200
           )
+        WebMock.stub(:get, "#{Rest::Client::BASE_URL}/budget/items/metadata?month=#{month}&year=#{year}")
+          .to_return(
+             body: File.read("./spec/support/budget_items_metadata.json"),
+             status: 200
+          )
 
         query_string = %{
           {
