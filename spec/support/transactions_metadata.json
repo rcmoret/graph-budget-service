@@ -1,0 +1,11 @@
+{
+  "date_range": ["2019-09-01", "2019-09-30"],
+  "prior_balance":-5021582,
+  "query_options":{
+    "month":"9",
+    "year":"2019",
+    "account_id":"12",
+    "captures":["12"],
+    "include_pending":false
+  }
+}

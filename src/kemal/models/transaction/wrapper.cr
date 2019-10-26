@@ -10,25 +10,11 @@ module Transaction
     end
 
     field :metadata do
-      @metadata ||= Metadata.new(parsed_response["metadata"])
+      @metadata ||= Metadata.for(account_id, month, year)
     end
 
     field :collection do
-      parsed_response["transactions"].as_a.map do |entry_attrs|
-        Entry::Factory.create_from_json(entry_attrs)
-      end
-    end
-
-    private def parsed_response : JSON::Any
-      @parsed_response ||= JSON.parse(response_body)
-    end
-
-    private def response_body : String
-      Rest::Client.get(endpoint).body
-    end
-
-    private def endpoint : String
-      "accounts/#{account_id}/transactions?month=#{month}&year=#{year}"
+      @collection ||= [] of Entry
     end
 
     private def account_id : Int32
