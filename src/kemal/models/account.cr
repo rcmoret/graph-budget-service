@@ -13,24 +13,21 @@ class Account
 
   @[JSON::Field(key: "id")]
   getter id : Int32
+  field :id
 
   @[JSON::Field(key: "name")]
   getter name : String
+  field :name
 
   @[JSON::Field(key: "balance")]
   getter balance : Int32
+  field :balance
 
   @[JSON::Field(key: "priority")]
   getter priority : Int32
+  field :priority
 
   @[JSON::Field(key: "cash_flow")]
   getter cash_flow : Bool
-
-  field :id
-  field :name
-  field :balance
-  field :priority
-  field :cashFlow do
-    cash_flow
-  end
+  field :cashFlow { cash_flow }
 end
