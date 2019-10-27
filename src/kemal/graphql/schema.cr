@@ -83,8 +83,8 @@ module Budget
         type BudgetItemType {
           id: String!
           name: String!
-          amount: String!
-          spent: String!
+          amount: Int!
+          spent: Int!
           accrual: String!
           month: String!
           year: String!
