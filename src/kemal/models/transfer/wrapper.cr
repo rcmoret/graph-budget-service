@@ -5,6 +5,11 @@ module Transfer
     include GraphQL::ObjectType
     include JSON::Serializable
 
+    def self.fetch(page, limit)
+      response = Rest::Client.get("transfers?page=#{page}&per_page=#{limit}")
+      from_json(response.body)
+    end
+
     @[JSON::Field(key: "metadata")]
     getter metadata : Metadata
     field :metadata

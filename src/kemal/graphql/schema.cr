@@ -2,6 +2,7 @@ require "graphql-crystal"
 require "../models/account"
 require "../models/budget/*"
 require "../models/transaction/*"
+require "../models/transfer/*"
 
 module QueryType
   include GraphQL::ObjectType
@@ -31,11 +32,11 @@ module QueryType
     Budget::Item.find(args["categoryId"].as(Int32), args["itemId"].as(Int32))
   end
 
-  # field :transfers do |args|
-  #   limit = args.fetch("limit", 10).as(Int32)
-  #   offset = args.fetch("offset", 0).as(Int32)
-  #   Transfer::Wrapper.fetch(offset, limit)
-  # end
+  field :transfers do |args|
+    limit = args.fetch("limit", 10).as(Int32)
+    page = args.fetch("page", 1).as(Int32)
+    Transfer::Wrapper.fetch(page, limit)
+  end
 end
 
 module Budget
@@ -52,6 +53,7 @@ module Budget
           budgetItem(categoryId: Int!, itemId: Int!): BudgetItemType
           budgetItems(month: Int!, year: Int!): BudgetItemsType
           transactions(accountId: Int!, month: Int!, year: Int!): TransactionsType
+          transfers(limit: Int!, page: Int!): TransfersType
         }
 
         type AccountType {
@@ -137,9 +139,29 @@ module Budget
           iconClassName: String
           primaryTransactionId: Int
         }
+
+        type TransfersType {
+          metadata: TransferMetadataType
+          collection: [TransferEntryType]
+        }
+
+        type TransferMetadataType {
+          offset: Int!
+          limit: Int!
+          viewing: [Int]
+          total: Int!
+        }
+
+        type TransferEntryType {
+          id: ID!
+          toTransactionId: Int!
+          fromTransactionId: Int!
+          toTransaction: TransactionEntryType
+          fromTransaction: TransactionEntryType
+        }
+
       }
     )
-
     SCHEMA.tap do |schema|
       schema.query_resolver = QueryType
     end
