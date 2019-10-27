@@ -81,32 +81,32 @@ describe Budget::GraphQL do
             "budgetItem" => {
               "transactions" => [
                 {
-                  "accountName" => "Checking",
-                  "clearanceDate" => "2019-07-01",
+                  "accountName" => "Aspiration (ck)",
+                  "clearanceDate" => "2019-09-30",
                   "description" => "Chick-fil-A",
                   "details" => [
                     {
-                      "amount" => -807,
+                      "amount" => -869,
                     },
                   ],
                 },
                 {
-                  "accountName" => "Checking",
-                  "clearanceDate" => "2019-07-01",
+                  "accountName" => "Aspiration (ck)",
+                  "clearanceDate" => "2019-10-12",
                   "description" => "Chick-fil-A",
                   "details" => [
                     {
-                      "amount" => -807,
+                      "amount" => -4500,
                     },
                   ],
                 },
                 {
-                  "accountName" => "Checking",
-                  "clearanceDate" => "2019-07-01",
+                  "accountName" => "Aspiration (ck)",
+                  "clearanceDate" => nil,
                   "description" => "Chick-fil-A",
                   "details" => [
                     {
-                      "amount" => -807,
+                      "amount" => -2050,
                     },
                   ],
                 },
