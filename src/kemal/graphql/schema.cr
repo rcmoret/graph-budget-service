@@ -30,6 +30,12 @@ module QueryType
   field :budgetItem do |args|
     Budget::Item.find(args["categoryId"].as(Int32), args["itemId"].as(Int32))
   end
+
+  # field :transfers do |args|
+  #   limit = args.fetch("limit", 10).as(Int32)
+  #   offset = args.fetch("offset", 0).as(Int32)
+  #   Transfer::Wrapper.fetch(offset, limit)
+  # end
 end
 
 module Budget
