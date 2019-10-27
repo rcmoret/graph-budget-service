@@ -1,5 +1,6 @@
 require "graphql-crystal"
 require "../models/account"
+require "../models/icon"
 require "../models/budget/*"
 require "../models/transaction/*"
 require "../models/transfer/*"
@@ -37,6 +38,14 @@ module QueryType
     page = args.fetch("page", 1).as(Int32)
     Transfer::Wrapper.fetch(page, limit)
   end
+
+  field :icons do
+    Icon.all
+  end
+
+  field :icon do |args|
+    Icon.find(args["id"].as(Int32))
+  end
 end
 
 module Budget
@@ -54,6 +63,8 @@ module Budget
           budgetItems(month: Int!, year: Int!): BudgetItemsType
           transactions(accountId: Int!, month: Int!, year: Int!): TransactionsType
           transfers(limit: Int!, page: Int!): TransfersType
+          icons: [IconType]
+          icon(id: Int!): IconType
         }
 
         type AccountType {
@@ -160,6 +171,11 @@ module Budget
           fromTransaction: TransactionEntryType
         }
 
+        type IconType {
+          id: ID!
+          className: String!
+          name: String!
+        }
       }
     )
     SCHEMA.tap do |schema|
