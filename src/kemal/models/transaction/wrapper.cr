@@ -14,7 +14,7 @@ module Transaction
     end
 
     field :collection do
-      @collection ||= [] of Entry
+      @collection ||= Entry.for(account_id, month, year)
     end
 
     private def account_id : Int32

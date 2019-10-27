@@ -26,6 +26,18 @@ describe Budget::GraphQL do
             "account_id" => 17,
           },
           {
+            "id" => 9473,
+            "account_id" => 17,
+          },
+          {
+            "id" => 9514,
+            "account_id" => 17,
+          },
+          {
+            "id" => 9376,
+            "account_id" => 17,
+          },
+          {
             "id" => 9515,
             "account_id" => 17,
           },

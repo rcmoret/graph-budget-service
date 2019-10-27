@@ -2,147 +2,151 @@ require "graphql-crystal"
 
 module Transaction
   class Entry
+    include JSON::Serializable
     include GraphQL::ObjectType
-    getter data
-    getter subtransactions
 
-    def self.find(account_id : Int32, transaction_id : Int32, data : Hash(String, Int32 | String | Bool | Nil)) : Entry
-      url = "accounts/#{account_id}/transactions/#{transaction_id}"
-      response = JSON.parse(Rest::Client.get(url).body)
-      Factory.create({
-        "id" => transaction_id,
-        "clearance_date" => response["clearance_date"].as_s,
-        "description" => response["description"].as_s?,
-        "account_name" => response["account_name"].as_s,
-        "account_id" => response["account_id"].as_i,
-        "check_number" => response["check_number"].as_s?,
-        "notes" => response["notes"].as_s?,
-        "budget_exclusion" => response["budget_exclusion"].as_bool,
-        "amount" => response["amount"].as_i,
-        "budget_category" => data["budget_category"],
-        "primary_transaction_id" => response["primary_transaction_id"].as_i?,
-        "budget_item_id" => data["budget_item_id"],
-        "icon_class_name" => data["icon_class_name"]
-      },
-        [] of Hash(String, Int32 | String | Bool | Nil))
+    def self.for(account_id, month, year) : Array(Entry)
+      query = "year=#{year}&month=#{month}"
+      response = Rest::Client.get("accounts/#{account_id}/transactions?#{query}")
+      Array(Entry).from_json(response.body)
     end
 
-    def initialize(
-      data : Hash(String, Int32 | String | Bool | Nil),
-      subtransactions : Array(Hash(String, Int32 | String | Bool | Nil))
-    )
-      @data = data
-      @subtransactions = subtransactions
+    def self.find(account_id, id) : Entry
+      response = Rest::Client.get("accounts/#{account_id}/transactions/#{id}")
+      from_json(response.body)
     end
 
-    def details : Array(Detail)
-      return [Detail.new(data.merge({ "primary_transaction_id" => nil }))] if subtransactions.none?
+    def to_s
+      "hello world"
+    end
 
-      subtransactions.map do |attrs|
-        Detail.new({
-          "description" => data["description"],
-          "amount" => attrs["amount"],
-          "budget_category" => attrs["budget_category"]?,
-          "budget_item_id" => attrs["budget_item_id"],
-          "icon_class_name" => attrs["icon_class_name"],
-          "primary_transaction_id" => attrs["primary_transaction_id"]
-        })
+    @[JSON::Field(key: "id")]
+    getter id : Int32
+    field :id
+
+    @[JSON::Field(key: "account_id")]
+    getter account_id : Int32
+    field :accountId { account_id }
+
+    @[JSON::Field(key: "description")]
+    getter description : String?
+
+    field :description do
+      if primary_transaction_id.is_a?(Nil)
+        description
+      else
+        parent_record.description
+      end
+    end
+
+    @[JSON::Field(key: "clearance_date")]
+    getter clearance_date : String?
+    field :clearanceDate { clearance_date }
+
+    @[JSON::Field(key: "account_name")]
+    getter account_name : String
+    field :accountName { account_name }
+
+    @[JSON::Field(key: "check_number")]
+    getter check_number : String?
+    field :checkNumber { check_number }
+
+    @[JSON::Field(key: "notes")]
+    getter notes : String?
+    field :notes
+
+    @[JSON::Field(key: "budget_exclusion")]
+    getter budget_exclusion : Bool
+    field :budgetExclusion { budget_exclusion }
+
+    @[JSON::Field(key: "primary_transaction_id", emit_null: true)]
+    getter primary_transaction_id : Int32?
+    field :primaryTransactionId { primary_transaction_id }
+
+    # details
+    @[JSON::Field(key: "amount")]
+    getter amount : Int32
+
+    @[JSON::Field(key: "budget_item_id")]
+    getter budget_item_id : Int32?
+
+    @[JSON::Field(key: "budget_category")]
+    getter budget_category : String?
+
+    @[JSON::Field(key: "icon_class_name")]
+    getter icon_class_name : String?
+
+    @[JSON::Field(key: "subtransactions")]
+    getter subtransactions : Array(Subtransaction) | Nil
+
+    private def details : Array(Detail)
+      if subtransactions == nil || subtransactions.as(Array).size == 0
+        [detail]
+      else
+        subtransactions.as(Array).map(&.as_detail)
       end
     end
     field :details
 
-    def description
-      return data["description"] if data["primary_transaction_id"] == nil
-
-      resp = Finder.find(account_id, data["primary_transaction_id"].to_s.to_i)
-      resp.description
+    private def parent_record
+      self.class.find(account_id, primary_transaction_id)
     end
-    field :description
 
-    field :id
-    field :accountId { account_id }
-    field :clearanceDate { data["clearance_date"] }
-    field :accountName { data["account_name"] }
-    field :checkNumber { data["check_number"] }
-    field :notes { data["notes"] }
-    field :budgetExclusion { data["budget_exclusion"] }
+    private def detail : Detail
+      Detail.new({
+        "amount" => amount,
+        "budget_item_id" => budget_item_id,
+        "budget_category" => budget_category,
+        "primary_transaction_id" => primary_transaction_id,
+        "icon_class_name" => icon_class_name
+      })
+    end
+  end
+
+  class Subtransaction
+    include JSON::Serializable
+
+    @[JSON::Field(key: "id")]
+    getter id : Int32
+
+    @[JSON::Field(key: "amount")]
+    getter amount : Int32
+
+    @[JSON::Field(key: "budget_item_id")]
+    getter budget_item_id : Int32?
+
+    @[JSON::Field(key: "budget_category")]
+    getter budget_category : String?
+
+    @[JSON::Field(key: "icon_class_name")]
+    getter icon_class_name : String?
+
+    @[JSON::Field(key: "primary_transaction_id")]
+    getter primary_transaction_id : Int32
+
+    def as_detail : Detail
+      Detail.new({
+        "amount" => amount,
+        "budget_item_id" => budget_item_id,
+        "budget_category" => budget_category,
+        "primary_transaction_id" => primary_transaction_id,
+        "icon_class_name" => icon_class_name
+      })
+    end
+  end
+
+  class Detail
+    include GraphQL::ObjectType
+    getter data
+
+    def initialize(data : Hash(String, Int32 | String | Nil))
+      @data = data
+    end
+
+    field :amount { data["amount"] }
+    field :budgetItemId { data["budget_item_id"] }
+    field :budgetCategory { data["budget_category"] }
+    field :iconClassName { data["icon_class_name"] }
     field :primaryTransactionId { data["primary_transaction_id"] }
-
-    private def id
-      data["id"].to_s.to_i
-    end
-
-    private def account_id
-      data["account_id"].to_s.to_i
-    end
-
-    class Finder
-      def self.find(account_id : Int32, txn_id : Int32) : Finder
-        url = "accounts/#{account_id}/transactions/#{txn_id}"
-        response = JSON.parse(Rest::Client.get(url).body)
-        new(response)
-      end
-
-      getter data
-
-      def initialize(data : JSON::Any)
-        @data = data
-      end
-
-      def description
-        data["description"].as_s?
-      end
-    end
-
-    class Factory
-      alias BASETYPES = String | Int32 | Bool | Nil
-
-      def self.create(data : Hash(String, BASETYPES), subtransactions : Array(Hash(String, BASETYPES))) : Entry
-        attrs = {
-          "id" => data["id"],
-          "clearance_date" => data["clearance_date"],
-          "description" => data["description"],
-          "account_name" => data["account_name"],
-          "check_number" => data["check_number"],
-          "notes" => data["notes"],
-          "budget_exclusion" => data["budget_exclusion"],
-          "amount" => data["amount"],
-          "budget_category" => data["budget_category"],
-          "budget_item_id" => data["budget_item_id"],
-          "account_id" => data["account_id"],
-          "primary_transaction_id" => data["primary_transaction_id"],
-          "icon_class_name" => data["icon_class_name"]
-        }
-        Entry.new(attrs, subtransactions)
-      end
-
-      def self.create_from_json(data : JSON::Any) : Entry
-        attrs = {
-          "id" => data["id"].as_i,
-          "clearance_date" => data["clearance_date"].as_s?,
-          "description" => data["description"].as_s?,
-          "account_name" => data["account_name"].as_s,
-          "check_number" => data["check_number"].as_s?,
-          "notes" => data["notes"].as_s?,
-          "budget_exclusion" => data["budget_exclusion"].as_bool,
-          "amount" => data["amount"].as_i,
-          "budget_category" => data["budget_category"].as_s?,
-          "budget_item_id" => data["budget_item_id"].as_i?,
-          "account_id" => data["account_id"].as_i,
-          "primary_transaction_id" => nil,
-          "icon_class_name" => data["icon_class_name"].as_s?
-        }
-        subtransactions = data["subtransactions"].as_a.map do |subtransaction|
-          Hash(String, String | Int32 | Bool | Nil).new.tap do |hash|
-            hash["amount"] = subtransaction["amount"].as_i
-            hash["budget_category"] = subtransaction["budget_category"].as_s?
-            hash["budget_item_id"] = subtransaction["budget_item_id"].as_i?
-            hash["primary_transaction_id"] = subtransaction["primary_transaction_id"].as_i?
-            hash["icon_class_name"] = subtransaction["icon_class_name"].as_s?
-          end
-        end
-        Entry.new(attrs, subtransactions)
-      end
-    end
   end
 end

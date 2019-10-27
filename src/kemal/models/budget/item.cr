@@ -72,7 +72,8 @@ module Budget
     field :maturityYear { maturity_year }
 
     def transactions
-      [] of Transaction::Entry
+      response = Rest::Client.get("budget/categories/#{budget_category_id}/items/#{id}/transactions")
+      Array(Transaction::Entry).from_json(response.body)
     end
     field :transactions
   end
