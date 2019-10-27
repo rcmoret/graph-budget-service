@@ -16,19 +16,19 @@ module QueryType
   end
 
   field :budgetItems do |args|
-    Budget::Wrapper.new(args["month"].to_s, args["year"].to_s)
+    Budget::Wrapper.new(args["month"].as(Int32), args["year"].as(Int32))
   end
 
   field :transactions do |args|
     Transaction::Wrapper.new({
-      "account_id" => args["accountId"].to_s,
-      "month" => args["month"].to_s,
-      "year" => args["year"].to_s
+      "account_id" => args["accountId"].as(Int32),
+      "month" => args["month"].as(Int32),
+      "year" => args["year"].as(Int32)
     })
   end
 
   field :budgetItem do |args|
-    Budget::Item.find(args["categoryId"].to_s.to_i, args["itemId"].to_s.to_i)
+    Budget::Item.find(args["categoryId"].as(Int32), args["itemId"].as(Int32))
   end
 end
 
@@ -43,9 +43,9 @@ module Budget
         type QueryType {
           accounts: [AccountType]
           budgetCategories: [BudgetCategoryType]
-          budgetItem(categoryId: String!, itemId: String!): BudgetItemType
-          budgetItems(month: String!, year: String!): BudgetItemsType
-          transactions(accountId: String!, month: String!, year: String!): TransactionsType
+          budgetItem(categoryId: Int!, itemId: Int!): BudgetItemType
+          budgetItems(month: Int!, year: Int!): BudgetItemsType
+          transactions(accountId: Int!, month: Int!, year: Int!): TransactionsType
         }
 
         type AccountType {

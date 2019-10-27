@@ -5,7 +5,7 @@ module Transaction
     include GraphQL::ObjectType
     getter options
 
-    def initialize(options : Hash(String, String))
+    def initialize(options : Hash(String, Int32))
       @options = options
     end
 
@@ -17,16 +17,16 @@ module Transaction
       @collection ||= Entry.for(account_id, month, year)
     end
 
-    private def account_id : Int32
-      options["account_id"].to_i
+    private def account_id
+      options["account_id"]
     end
 
-    private def month : Int32
-      options["month"].to_i
+    private def month
+      options["month"]
     end
 
-    private def year : Int32
-      options["year"].to_i
+    private def year
+      options["year"]
     end
   end
 end

@@ -6,7 +6,7 @@ module Budget
     getter month
     getter year
 
-    def initialize(month : String, year : String)
+    def initialize(month : Int32, year : Int32)
       @month = month
       @year = year
     end
