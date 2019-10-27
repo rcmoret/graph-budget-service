@@ -55,20 +55,20 @@ module Budget
         }
 
         type AccountType {
-          id: String!
+          id: ID!
           name: String!
-          balance: String!
-          priority: String!
-          cashFlow: String
+          balance: Int!
+          priority: Int!
+          cashFlow: Boolean!
         }
 
         type BudgetCategoryType {
-          id: String!
+          id: ID!
           name: String!
-          expense: String!
-          monthly: String!
-          accrual: String!
-          defaultAmount: String!
+          expense: Boolean!
+          monthly: Boolean!
+          accrual: Boolean!
+          defaultAmount: Int!
           iconClassName: String
         }
 
@@ -78,28 +78,28 @@ module Budget
         }
 
         type BudgetMetadataType {
-          month: String!
-          year: String!
-          isClosedOut: String!
-          isSetUp: String!
-          daysRemaining: String!
-          spent: String!
+          month: Int!
+          year: Int!
+          isClosedOut: Boolean!
+          isSetUp: Boolean!
+          daysRemaining: Int!
+          spent: Int!
         }
 
         type BudgetItemType {
-          id: String!
+          id: ID!
           name: String!
           amount: Int!
           spent: Int!
-          accrual: String!
-          month: String!
-          year: String!
-          spent: String!
-          budgetCategoryId: String!
+          accrual: Boolean!
+          month: Int!
+          year: Int!
+          spent: Int!
+          budgetCategoryId: Int!
           iconClassName: String!
-          transactionCount: String!
-          maturityMonth: String!
-          maturityYear: String!
+          transactionCount: Int!
+          maturityMonth: Int!
+          maturityYear: Int!
           transactions: [TransactionEntryType]
         }
 
@@ -109,33 +109,33 @@ module Budget
         }
 
         type TransactionMetadataType {
-          priorBalance: String!
+          priorBalance: Int!
           dateRange: [String!]
-          month: String!
-          year: String!
-          accountId: String!
-          includePending: String!
+          month: Int!
+          year: Int!
+          accountId: Int!
+          includePending: Boolean!
         }
 
         type TransactionEntryType {
-          id: String!
-          accountId: String!
+          id: ID!
+          accountId: Int!
           description: String
           clearanceDate: String
           checkNumber: String
           notes: String
-          budgetExclusion: String!
+          budgetExclusion: Boolean!
           accountName: String!
-          primaryTransactionId: String
+          primaryTransactionId: Int
           details: [TransactionDetailType]
         }
 
         type TransactionDetailType {
-          amount: String!
+          amount: Int!
           budgetCategory: String
-          budgetItemId: String
+          budgetItemId: Int
           iconClassName: String
-          primaryTransactionId: String
+          primaryTransactionId: Int
         }
       }
     )
