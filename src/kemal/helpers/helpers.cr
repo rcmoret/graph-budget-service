@@ -241,13 +241,10 @@ end
 
 # Adds headers to `Kemal::StaticFileHandler`. This is especially useful for `CORS`.
 #
-# ```
-# static_headers do |response, filepath, filestat|
-#   if filepath =~ /\.html$/
-#     response.headers.add("Access-Control-Allow-Origin", "*")
-#   end
-#   response.headers.add("Content-Size", filestat.size.to_s)
-# end
+static_headers do |response, _, filestat|
+  response.headers.add("Access-Control-Allow-Origin", "*")
+  response.headers.add("Content-Size", filestat.size.to_s)
+end
 # ```
 def static_headers(&headers : HTTP::Server::Response, String, File::Info -> Void)
   Kemal.config.static_headers = headers

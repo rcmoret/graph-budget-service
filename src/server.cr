@@ -25,16 +25,25 @@ module Kemal::GraphQL
   #
   get "/api_query" do |env|
     env.response.content_type = "application/json"
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
     Budget::GraphQL::SCHEMA.execute(
       *extract_graphql_payload(:query, env)
     ).to_json
   end
 
+  options "/graphql" do |env|
+    env.response.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+    env.response.headers.add("Access-Control-Allow-Headers", "content-type")
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
+    env.response.content_type = "application/json"
+    "hello world"
+  end
   #
   # read query and variable from the json request body
   #
   post "/graphql" do |env|
     env.response.content_type = "application/json"
+    env.response.headers.add("Access-Control-Allow-Origin", "*")
     Budget::GraphQL::SCHEMA.execute(
       *extract_graphql_payload(:json, env)
     ).to_json
