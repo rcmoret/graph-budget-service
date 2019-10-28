@@ -1,5 +1,5 @@
 require "./kemal"
-require "./kemal/graphql/schema"
+require "./graphql/schema"
 
 module Kemal::GraphQL
   private def self.extract_graphql_payload(type : Symbol, env)

@@ -1,6 +1,5 @@
 require "json"
 require "graphql-crystal"
-require "../rest_client"
 
 class Account
   include GraphQL::ObjectType
