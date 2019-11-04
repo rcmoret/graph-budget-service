@@ -8,7 +8,7 @@ module Transaction
     def self.for(account_id, month, year) : Array(Entry)
       query = "year=#{year}&month=#{month}"
       response = Rest::Client.get("accounts/#{account_id}/transactions?#{query}")
-      Array(Entry).from_json(response.body)
+      Array(self).from_json(response.body)
     end
 
     def self.find(account_id, id) : Entry
@@ -126,6 +126,7 @@ module Transaction
 
     def as_detail : Detail
       Detail.new({
+        "id" => id,
         "amount" => amount,
         "budget_item_id" => budget_item_id,
         "budget_category" => budget_category,
@@ -143,6 +144,7 @@ module Transaction
       @data = data
     end
 
+    field :id { data["id"]? }
     field :amount { data["amount"] }
     field :budgetItemId { data["budget_item_id"] }
     field :budgetCategory { data["budget_category"] }

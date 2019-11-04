@@ -18,6 +18,10 @@ module Budget
     getter year : Int32
     field :year
 
+    @[JSON::Field(key: "balance")]
+    getter balance : Int32
+    field :balance
+
     @[JSON::Field(key: "is_set_up")]
     getter is_set_up : Bool
     field :isSetUp { is_set_up }
@@ -33,5 +37,9 @@ module Budget
     @[JSON::Field(key: "spent")]
     getter spent : Int32
     field :spent
+
+    @[JSON::Field(key: "total_days")]
+    getter total_days : Int32
+    field :totalDays { total_days }
   end
 end

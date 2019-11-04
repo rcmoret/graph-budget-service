@@ -83,6 +83,7 @@ module Budget
           accrual: Boolean!
           defaultAmount: Int!
           iconClassName: String
+          iconId: Int
         }
 
         type BudgetItemsType {
@@ -93,10 +94,12 @@ module Budget
         type BudgetMetadataType {
           month: Int!
           year: Int!
+          balance: Int!
           isClosedOut: Boolean!
           isSetUp: Boolean!
           daysRemaining: Int!
           spent: Int!
+          totalDays: Int!
         }
 
         type BudgetItemType {
@@ -105,6 +108,8 @@ module Budget
           amount: Int!
           spent: Int!
           accrual: Boolean!
+          expense: Boolean!
+          monthly: Boolean!
           month: Int!
           year: Int!
           spent: Int!
@@ -144,6 +149,7 @@ module Budget
         }
 
         type TransactionDetailType {
+          id: Int
           amount: Int!
           budgetCategory: String
           budgetItemId: Int

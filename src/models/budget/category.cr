@@ -1,38 +1,45 @@
 require "graphql-crystal"
-require "http"
 
 module Budget
   class Category
     include GraphQL::ObjectType
+    include JSON::Serializable
 
     def self.all
       response = Rest::Client.get("budget/categories")
       Array(self).from_json(response.body)
     end
 
-    JSON.mapping(
-      id: Int32,
-      name: String,
-      monthly: Bool,
-      expense: Bool,
-      accrual: Bool,
-      default_amount: Int32,
-      icon_class_name: String?
-    )
-
+    @[JSON::Field(key: "id")]
+    getter id : Int32
     field :id
-    field :name
-    field :monthly
-    field :expense
-    field :accrual
-    field :defaultAmount do
-      default_amount
-    end
-    field :iconClassName do
-      icon_class_name
-    end
-  end
 
-  class Categories
+    @[JSON::Field(key: "name")]
+    getter name : String
+    field :name
+
+    @[JSON::Field(key: "monthly")]
+    getter monthly : Bool
+    field :monthly
+
+    @[JSON::Field(key: "expense")]
+    getter expense : Bool
+    field :expense
+
+    @[JSON::Field(key: "accrual")]
+    getter accrual : Bool
+    field :accrual
+
+    @[JSON::Field(key: "default_amount")]
+    getter default_amount : Int32
+    field :defaultAmount { default_amount }
+
+    @[JSON::Field(key: "icon_class_name")]
+    getter icon_class_name : String?
+    field :iconClassName { icon_class_name }
+
+    @[JSON::Field(key: "icon_id")]
+    getter icon_id : Int32?
+    field :iconId { icon_id }
   end
 end
