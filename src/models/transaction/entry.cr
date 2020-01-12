@@ -26,14 +26,7 @@ module Transaction
 
     @[JSON::Field(key: "description")]
     getter description : String?
-
-    field :description do
-      if primary_transaction_id.is_a?(Nil)
-        description
-      else
-        parent_record.description
-      end
-    end
+    field :description
 
     @[JSON::Field(key: "clearance_date")]
     getter clearance_date : String?
@@ -55,50 +48,12 @@ module Transaction
     getter budget_exclusion : Bool
     field :budget_exclusion
 
-    @[JSON::Field(key: "primary_transaction_id", emit_null: true)]
-    getter primary_transaction_id : Int32?
-    field :primary_transaction_id
-
-    # details
-    @[JSON::Field(key: "amount")]
-    getter amount : Int32
-
-    @[JSON::Field(key: "budget_item_id")]
-    getter budget_item_id : Int32?
-
-    @[JSON::Field(key: "budget_category")]
-    getter budget_category : String?
-
-    @[JSON::Field(key: "icon_class_name")]
-    getter icon_class_name : String?
-
-    @[JSON::Field(key: "subtransactions")]
-    getter subtransactions : Array(Subtransaction) | Nil
-
-    field :details do
-      if subtransactions == nil || subtransactions.as(Array).size == 0
-        [detail]
-      else
-        subtransactions.as(Array).map(&.as_detail)
-      end
-    end
-
-    private def parent_record
-      self.class.find(account_id, primary_transaction_id)
-    end
-
-    private def detail : Detail
-      Detail.new({
-        "amount" => amount,
-        "budget_item_id" => budget_item_id,
-        "budget_category" => budget_category,
-        "primary_transaction_id" => primary_transaction_id,
-        "icon_class_name" => icon_class_name
-      })
-    end
+    @[JSON::Field(key: "details")]
+    getter details : Array(Detail)
   end
 
-  class Subtransaction
+  class Detail
+    include GraphQL::ObjectType
     include JSON::Serializable
 
     @[JSON::Field(key: "id")]
@@ -115,35 +70,5 @@ module Transaction
 
     @[JSON::Field(key: "icon_class_name")]
     getter icon_class_name : String?
-
-    @[JSON::Field(key: "primary_transaction_id")]
-    getter primary_transaction_id : Int32
-
-    def as_detail : Detail
-      Detail.new({
-        "id" => id,
-        "amount" => amount,
-        "budget_item_id" => budget_item_id,
-        "budget_category" => budget_category,
-        "primary_transaction_id" => primary_transaction_id,
-        "icon_class_name" => icon_class_name
-      })
-    end
-  end
-
-  class Detail
-    include GraphQL::ObjectType
-    getter data
-
-    def initialize(data : Hash(String, Int32 | String | Nil))
-      @data = data
-    end
-
-    field :id { data["id"]? }
-    field :amount { data["amount"] }
-    field :budget_item_id { data["budget_item_id"] }
-    field :budget_category { data["budget_category"] }
-    field :icon_class_name { data["icon_class_name"] }
-    field :primary_transaction_id { data["primary_transaction_id"] }
   end
 end

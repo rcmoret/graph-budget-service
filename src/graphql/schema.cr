@@ -157,7 +157,6 @@ module Budget
           notes: String
           budget_exclusion: Boolean!
           account_name: String!
-          primary_transaction_id: Int
           details: [TransactionDetailType]
         }
 
@@ -167,7 +166,6 @@ module Budget
           budget_category: String
           budget_item_id: Int
           icon_class_name: String
-          primary_transaction_id: Int
         }
 
         type TransfersType {
