@@ -24,15 +24,15 @@ module Budget
 
     @[JSON::Field(key: "is_set_up")]
     getter is_set_up : Bool
-    field :isSetUp { is_set_up }
+    field :is_set_up
 
     @[JSON::Field(key: "is_closed_out")]
     getter is_closed_out : Bool
-    field :isClosedOut { is_closed_out }
+    field :is_closed_out
 
     @[JSON::Field(key: "days_remaining")]
     getter days_remaining : Int32
-    field :daysRemaining { days_remaining }
+    field :days_remaining
 
     @[JSON::Field(key: "spent")]
     getter spent : Int32
@@ -40,6 +40,6 @@ module Budget
 
     @[JSON::Field(key: "total_days")]
     getter total_days : Int32
-    field :totalDays { total_days }
+    field :total_days
   end
 end

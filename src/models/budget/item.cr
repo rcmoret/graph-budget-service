@@ -53,28 +53,27 @@ module Budget
 
     @[JSON::Field(key: "budget_category_id")]
     getter budget_category_id : Int32
-    field :budgetCategoryId { budget_category_id }
+    field :budget_category_id
 
     @[JSON::Field(key: "icon_class_name")]
     getter icon_class_name : String | Nil
-    field :iconClassName { icon_class_name }
+    field :icon_class_name
 
     @[JSON::Field(key: "transaction_count")]
     getter transaction_count : Int32
-    field :transactionCount { transaction_count }
+    field :transaction_count
 
     @[JSON::Field(key: "maturity_month")]
     getter maturity_month : Int32 | Nil
-    field :maturityMonth { maturity_month }
+    field :maturity_month
 
     @[JSON::Field(key: "maturity_year")]
     getter maturity_year : Int32 | Nil
-    field :maturityYear { maturity_year }
+    field :maturity_year
 
-    def transactions
+    field :transactions do
       response = Rest::Client.get("budget/categories/#{budget_category_id}/items/#{id}/transactions")
       Array(Transaction::Entry).from_json(response.body)
     end
-    field :transactions
   end
 end

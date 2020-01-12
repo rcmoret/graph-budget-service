@@ -13,24 +13,28 @@ module QueryType
     Account.all
   end
 
-  field :budgetCategories do
+  field :budget_categories do
     Budget::Category.all
   end
 
-  field :budgetItems do |args|
+  field :budget_category do
+    Budget::Category.find(args["id"].as(Int32))
+  end
+
+  field :budget_items do |args|
     Budget::Wrapper.new(args["month"].as(Int32), args["year"].as(Int32))
   end
 
   field :transactions do |args|
     Transaction::Wrapper.new({
-      "account_id" => args["accountId"].as(Int32),
+      "account_id" => args["account_id"].as(Int32),
       "month" => args["month"].as(Int32),
       "year" => args["year"].as(Int32)
     })
   end
 
-  field :budgetItem do |args|
-    Budget::Item.find(args["categoryId"].as(Int32), args["itemId"].as(Int32))
+  field :budget_item do |args|
+    Budget::Item.find(args["category_id"].as(Int32), args["item_id"].as(Int32))
   end
 
   field :transfers do |args|
@@ -58,10 +62,11 @@ module Budget
 
         type QueryType {
           accounts: [AccountType]
-          budgetCategories: [BudgetCategoryType]
-          budgetItem(categoryId: Int!, itemId: Int!): BudgetItemType
-          budgetItems(month: Int!, year: Int!): BudgetItemsType
-          transactions(accountId: Int!, month: Int!, year: Int!): TransactionsType
+          budget_category(id: Int!): BudgetCategoryType
+          budget_categories: [BudgetCategoryType]
+          budget_item(category_id: Int!, item_id: Int!): BudgetItemType
+          budget_items(month: Int!, year: Int!): BudgetItemsType
+          transactions(account_id: Int!, month: Int!, year: Int!): TransactionsType
           transfers(limit: Int!, page: Int!): TransfersType
           icons: [IconType]
           icon(id: Int!): IconType
@@ -72,7 +77,7 @@ module Budget
           name: String!
           balance: Int!
           priority: Int!
-          cashFlow: Boolean!
+          cash_flow: Boolean!
         }
 
         type BudgetCategoryType {
@@ -81,9 +86,10 @@ module Budget
           expense: Boolean!
           monthly: Boolean!
           accrual: Boolean!
-          defaultAmount: Int!
-          iconClassName: String
-          iconId: Int
+          default_amount: Int!
+          icon_class_name: String
+          icon_id: Int
+          maturity_intervals: [BudgetCategoryMaturityIntervalType]
         }
 
         type BudgetItemsType {
@@ -95,11 +101,11 @@ module Budget
           month: Int!
           year: Int!
           balance: Int!
-          isClosedOut: Boolean!
-          isSetUp: Boolean!
-          daysRemaining: Int!
+          is_closed_out: Boolean!
+          is_set_up: Boolean!
+          days_remaining: Int!
           spent: Int!
-          totalDays: Int!
+          total_days: Int!
         }
 
         type BudgetItemType {
@@ -113,12 +119,19 @@ module Budget
           month: Int!
           year: Int!
           spent: Int!
-          budgetCategoryId: Int!
-          iconClassName: String!
-          transactionCount: Int!
-          maturityMonth: Int!
-          maturityYear: Int!
+          budget_category_id: Int!
+          icon_class_name: String!
+          transaction_count: Int!
+          maturity_month: Int!
+          maturity_year: Int!
           transactions: [TransactionEntryType]
+        }
+
+        type BudgetCategoryMaturityIntervalType {
+          id: ID!
+          month: Int!
+          year: Int!
+          categoryId: Int!
         }
 
         type TransactionsType {
@@ -127,34 +140,34 @@ module Budget
         }
 
         type TransactionMetadataType {
-          priorBalance: Int!
-          dateRange: [String!]
+          prior_balance: Int!
+          date_range: [String!]
           month: Int!
           year: Int!
-          accountId: Int!
-          includePending: Boolean!
+          account_id: Int!
+          include_pending: Boolean!
         }
 
         type TransactionEntryType {
           id: ID!
-          accountId: Int!
+          account_id: Int!
           description: String
-          clearanceDate: String
-          checkNumber: String
+          clearance_date: String
+          check_number: String
           notes: String
-          budgetExclusion: Boolean!
-          accountName: String!
-          primaryTransactionId: Int
+          budget_exclusion: Boolean!
+          account_name: String!
+          primary_transaction_id: Int
           details: [TransactionDetailType]
         }
 
         type TransactionDetailType {
           id: Int
           amount: Int!
-          budgetCategory: String
-          budgetItemId: Int
-          iconClassName: String
-          primaryTransactionId: Int
+          budget_category: String
+          budget_item_id: Int
+          icon_class_name: String
+          primary_transaction_id: Int
         }
 
         type TransfersType {
@@ -171,15 +184,15 @@ module Budget
 
         type TransferEntryType {
           id: ID!
-          toTransactionId: Int!
-          fromTransactionId: Int!
-          toTransaction: TransactionEntryType
-          fromTransaction: TransactionEntryType
+          to_transaction_id: Int!
+          from_transaction_id: Int!
+          to_transaction: TransactionEntryType
+          from_transaction: TransactionEntryType
         }
 
         type IconType {
           id: ID!
-          className: String!
+          class_name: String!
           name: String!
         }
       }

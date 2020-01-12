@@ -28,5 +28,5 @@ class Account
 
   @[JSON::Field(key: "cash_flow")]
   getter cash_flow : Bool
-  field :cashFlow { cash_flow }
+  field :cash_flow
 end

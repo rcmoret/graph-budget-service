@@ -10,6 +10,11 @@ module Budget
       Array(self).from_json(response.body)
     end
 
+    def self.find(id)
+      response = Rest::Client.get("budget/categories/#{id}")
+      from_json(response.body)
+    end
+
     @[JSON::Field(key: "id")]
     getter id : Int32
     field :id
@@ -32,14 +37,19 @@ module Budget
 
     @[JSON::Field(key: "default_amount")]
     getter default_amount : Int32
-    field :defaultAmount { default_amount }
+    field :default_amount
 
     @[JSON::Field(key: "icon_class_name")]
     getter icon_class_name : String?
-    field :iconClassName { icon_class_name }
+    field :icon_class_name
 
     @[JSON::Field(key: "icon_id")]
     getter icon_id : Int32?
-    field :iconId { icon_id }
+    field :icon_id
+
+    field :maturity_intervals do
+      response = Rest::Client.get("budget/categories/#{id}/maturity_intervals")
+      Array(MaturityInterval).from_json(response.body)
+    end
   end
 end

@@ -20,7 +20,7 @@ class Icon
 
   @[JSON::Field(key: "class_name")]
   getter class_name : String
-  field :className { class_name }
+  field :class_name
 
   @[JSON::Field(key: "name")]
   getter name : String

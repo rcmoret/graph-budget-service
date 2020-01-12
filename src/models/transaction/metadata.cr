@@ -13,19 +13,19 @@ module Transaction
 
     @[JSON::Field(key: "prior_balance")]
     getter prior_balance : Int32
-    field :priorBalance { prior_balance }
+    field :prior_balance
 
     @[JSON::Field(key: "date_range")]
     getter date_range : Array(String)
-    field :dateRange { date_range }
+    field :date_range
 
     @[JSON::Field(key: "query_options")]
     getter query_options : QueryOptions
 
-    field :accountId { query_options.account_id.as(String).to_i }
+    field :account_id { query_options.account_id.as(String).to_i }
     field :month { query_options.month.as(String).to_i }
     field :year { query_options.year.as(String).to_i }
-    field :includePending { query_options.include_pending }
+    field :include_pending { query_options.include_pending }
   end
 
   class QueryOptions

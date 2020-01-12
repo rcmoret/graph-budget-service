@@ -16,17 +16,13 @@ module Transaction
       from_json(response.body)
     end
 
-    def to_s
-      "hello world"
-    end
-
     @[JSON::Field(key: "id")]
     getter id : Int32
     field :id
 
     @[JSON::Field(key: "account_id")]
     getter account_id : Int32
-    field :accountId { account_id }
+    field :account_id
 
     @[JSON::Field(key: "description")]
     getter description : String?
@@ -41,15 +37,15 @@ module Transaction
 
     @[JSON::Field(key: "clearance_date")]
     getter clearance_date : String?
-    field :clearanceDate { clearance_date }
+    field :clearance_date
 
     @[JSON::Field(key: "account_name")]
     getter account_name : String
-    field :accountName { account_name }
+    field :account_name
 
     @[JSON::Field(key: "check_number")]
     getter check_number : String?
-    field :checkNumber { check_number }
+    field :check_number
 
     @[JSON::Field(key: "notes")]
     getter notes : String?
@@ -57,11 +53,11 @@ module Transaction
 
     @[JSON::Field(key: "budget_exclusion")]
     getter budget_exclusion : Bool
-    field :budgetExclusion { budget_exclusion }
+    field :budget_exclusion
 
     @[JSON::Field(key: "primary_transaction_id", emit_null: true)]
     getter primary_transaction_id : Int32?
-    field :primaryTransactionId { primary_transaction_id }
+    field :primary_transaction_id
 
     # details
     @[JSON::Field(key: "amount")]
@@ -79,14 +75,13 @@ module Transaction
     @[JSON::Field(key: "subtransactions")]
     getter subtransactions : Array(Subtransaction) | Nil
 
-    private def details : Array(Detail)
+    field :details do
       if subtransactions == nil || subtransactions.as(Array).size == 0
         [detail]
       else
         subtransactions.as(Array).map(&.as_detail)
       end
     end
-    field :details
 
     private def parent_record
       self.class.find(account_id, primary_transaction_id)
@@ -146,9 +141,9 @@ module Transaction
 
     field :id { data["id"]? }
     field :amount { data["amount"] }
-    field :budgetItemId { data["budget_item_id"] }
-    field :budgetCategory { data["budget_category"] }
-    field :iconClassName { data["icon_class_name"] }
-    field :primaryTransactionId { data["primary_transaction_id"] }
+    field :budget_item_id { data["budget_item_id"] }
+    field :budget_category { data["budget_category"] }
+    field :icon_class_name { data["icon_class_name"] }
+    field :primary_transaction_id { data["primary_transaction_id"] }
   end
 end
