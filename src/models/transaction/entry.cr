@@ -50,6 +50,7 @@ module Transaction
 
     @[JSON::Field(key: "details")]
     getter details : Array(Detail)
+    field :details
   end
 
   class Detail
@@ -58,17 +59,22 @@ module Transaction
 
     @[JSON::Field(key: "id")]
     getter id : Int32
+    field :id
 
     @[JSON::Field(key: "amount")]
     getter amount : Int32
+    field :amount
 
     @[JSON::Field(key: "budget_item_id")]
     getter budget_item_id : Int32?
+    field :budget_item_id
 
     @[JSON::Field(key: "budget_category")]
     getter budget_category : String?
+    field :budget_category
 
     @[JSON::Field(key: "icon_class_name")]
     getter icon_class_name : String?
+    field :icon_class_name
   end
 end
